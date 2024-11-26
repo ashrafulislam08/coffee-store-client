@@ -1,6 +1,37 @@
-import React from "react";
+import Swal from "sweetalert2";
 
 const AddCoffee = () => {
+  const handleAddCoffee = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value;
+    const chef = form.chef.value;
+    const supplier = form.supplier.value;
+    const taste = form.taste.value;
+    const photo = form.photo.value;
+    const newCoffee = { name, chef, supplier, taste, photo };
+    // console.log(coffee);
+
+    fetch("http://localhost:5000/coffee", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(newCoffee),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.insertedId) {
+          Swal.fire({
+            title: "Success!",
+            text: "Added a Coffee Successfully",
+            icon: "success",
+            confirmButtonText: "Exit",
+          });
+          form.reset();
+        }
+      });
+  };
   return (
     <div>
       <section>
@@ -15,7 +46,7 @@ const AddCoffee = () => {
           <div className="flex items-start justify-between p-5 border-b rounded-t"></div>
 
           <div className="p-6 space-y-6 text-left">
-            <form>
+            <form onSubmit={handleAddCoffee}>
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
