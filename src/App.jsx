@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import "./App.css";
 import CoffeeCard from "./components/CoffeeCard";
 
@@ -9,6 +9,10 @@ function App() {
       <h3 className="text-4xl text-center text-red-500 font-bold">
         Coffee Store: {coffees.length}
       </h3>
+
+      <Link to="/addCoffee">
+        <button className="btn">Add a Coffee</button>
+      </Link>
 
       <section className="grid md:grid-cols-2 gap-4">
         {coffees.map((coffee) => (

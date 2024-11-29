@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const AddCoffee = () => {
@@ -35,6 +36,9 @@ const AddCoffee = () => {
   return (
     <div>
       <section>
+        <Link to="/">
+          <button className="btn">Back to Home</button>
+        </Link>
         <div className="border rounded-lg shadow relative m-10 py-8 bg-[#F4F3F0]">
           <h3 className="text-xl font-semibold text-center">Add a Coffee</h3>
           <p className="text-gray-500 text-sm  px-8 mt-3">

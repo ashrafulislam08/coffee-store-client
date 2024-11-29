@@ -1,6 +1,11 @@
+import { useLoaderData, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const UpdateCoffee = () => {
+  const coffee = useLoaderData();
+  const { _id, name, chef, supplier, taste, photo } = coffee;
+  const navigate = useNavigate();
+
   const handleAddCoffee = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -9,26 +14,28 @@ const UpdateCoffee = () => {
     const supplier = form.supplier.value;
     const taste = form.taste.value;
     const photo = form.photo.value;
-    const newCoffee = { name, chef, supplier, taste, photo };
+    const updateCoffee = { name, chef, supplier, taste, photo };
     // console.log(coffee);
 
-    fetch("http://localhost:5000/coffee", {
-      method: "POST",
+    fetch(`http://localhost:5000/coffee/${_id}`, {
+      method: "PUT",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(newCoffee),
+      body: JSON.stringify(updateCoffee),
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.insertedId) {
+        console.log(data);
+        if (data.modifiedCount > 0) {
           Swal.fire({
             title: "Success!",
-            text: "Added a Coffee Successfully",
+            text: "Coffee Updated Successfully",
             icon: "success",
             confirmButtonText: "Exit",
           });
           form.reset();
+          navigate("/");
         }
       });
   };
@@ -59,6 +66,7 @@ const UpdateCoffee = () => {
                     type="text"
                     name="name"
                     id="name"
+                    defaultValue={name}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                     placeholder="Coffee Name"
                     required=""
@@ -75,6 +83,7 @@ const UpdateCoffee = () => {
                     type="text"
                     name="chef"
                     id="chef"
+                    defaultValue={chef}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                     placeholder="Chef"
                     required=""
@@ -91,6 +100,7 @@ const UpdateCoffee = () => {
                     type="text"
                     name="supplier"
                     id="supplier    "
+                    defaultValue={supplier}
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                     placeholder="Supplier"
                     required=""
@@ -106,6 +116,7 @@ const UpdateCoffee = () => {
                   <input
                     type="text"
                     name="taste"
+                    defaultValue={taste}
                     id="taste"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                     placeholder="Taste"
@@ -126,6 +137,7 @@ const UpdateCoffee = () => {
                   id="photo"
                   className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                   placeholder="Photo URL"
+                  defaultValue={photo}
                   required=""
                 />
               </div>
@@ -134,7 +146,7 @@ const UpdateCoffee = () => {
                   className="btn hover:bg-[#967259] w-full text-[#38220f] bg-[#967259] border-2 border-[#38220f]"
                   type="submit"
                 >
-                  Add Coffee
+                  Update Coffee
                 </button>
               </div>
             </form>
